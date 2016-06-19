@@ -1,0 +1,21 @@
+api:
+  image: resultadosdigitais/its_time_api:latest
+  command: "./entrypoint.sh"
+  restart: always
+  volumes:
+    - ~:/root
+    - .:/var/app
+  links:
+    - db
+  ports:
+   - "80:9393"
+  environment:
+    DATABASE_URL: 'postgres://postgres@db/its_time_api_db'
+    LOGGER_FILE: 'log/its_time_api.log'
+    WEB_SERVER_PORT: '9393'
+    RACK_ENV: development
+db:
+  image: postgres:9.4.4
+  volumes:
+    - ~:/root
+    - its_time_api_postgres:/var/lib/postgresql/data
